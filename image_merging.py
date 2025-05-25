@@ -85,9 +85,9 @@ class ImageMerger:
                     
     def get_files_from_directory(self, directory: Path, extensions: list, suffixes: list):
         result = {}
-        for root, dirs, files in directory.resolve().walk():
+        for root, dirs, files in walk(directory.resolve()):
             for f in files:
-                filename = Path(root / f).resolve()
+                filename = (Path(root) / Path(f)).resolve()
                 data = self.validate_filename(filename, extensions, suffixes)
                 if data:
                     print(filename, data.name, data.suffix, data.extension)
@@ -102,8 +102,9 @@ class ImageMerger:
                 print(f'\t{v}')
         return result
 
-    def merge_images_in_directory(self, directory: Path, extensions: list, suffixes: list):
+    def merge_images_in_directory(self, directory: Path, extensions: list, suffixes: list, direction: str='h', align: str='b', color: str='#ffffff' ):
         files = self.get_files_from_directory(directory, extensions, suffixes)
+        print(f'{files = }')
         try:
             for key, value in files.items():
                 if len(value) > 1:
@@ -119,13 +120,44 @@ class ImageMerger:
                                 heights.append(h)
                                 widths.append(w)
                                 images.append(img)
-                        new_image = Image.new('RGB', (max(widths), sum(heights)))
-                        dh = 0
-                        for i, h in zip(images, heights):
-                            new_image.paste(i, (0, dh))
-                            dh += h
-                        print(f'{directory.resolve() / key = }')
-                        new_image.save(f'{directory.resolve() / key}')
+                        if direction == 'v':
+                            new_image = Image.new('RGB', (max(widths), sum(heights)), color)
+                            dh = 0
+                            if align == 'l':
+                                for i, h in zip(images, heights):
+                                    new_image.paste(i, (0, dh))
+                                    dh += h
+                            elif align == 'c':
+                                x_c = max(widths) // 2
+                                for i, h, w in zip(images, heights, widths):
+                                    new_image.paste(i, (x_c - w // 2, dh))
+                                    dh += h
+                            elif align == 'r':
+                                w_max = max(widths)
+                                for i, h, w in zip(images, heights, widths):
+                                    new_image.paste(i, (w_max - w, dh))
+                                    dh += h
+                            print(f'{directory.resolve() / key = }')
+                            new_image.save(f'{directory.resolve() / key}')
+                        elif direction == 'h':
+                            new_image = Image.new('RGB', (sum(widths), max(heights)), color)
+                            dw = 0
+                            if align == 't':
+                                for i, w in zip(images, widths):
+                                    new_image.paste(i, (dw, 0))
+                                    dw += w
+                            elif align == 'c':
+                                y_c = max(heights) // 2
+                                for i, h, w in zip(images, heights, widths):
+                                    new_image.paste(i, (dw, y_c - h // 2))
+                                    dw += w
+                            elif align == 'b':
+                                h_max = max(heights)
+                                for i, h, w in zip(images, heights, widths):
+                                    new_image.paste(i, (dw, h_max - h))
+                                    dw += w
+                            print(f'{directory.resolve() / key = }')
+                            new_image.save(f'{directory.resolve() / key}')
                     except UnidentifiedImageError:
                         pass
 
@@ -138,9 +170,15 @@ def test():
     image_merger = ImageMerger()
     directory = Path('./test')
     extensions = ['.jpg', '.png', '.jpeg']
-    suffixes = ['_main', '_профиль']
+    suffixes = ['_main', '_профиль', '_profile']
+    direction = 'v'
+    align = 'c'
+    color = '#ffffff'
     print(f'{directory.resolve() = }')
-    image_merger.merge_images_in_directory(directory, extensions, suffixes)
+    image_merger.merge_images_in_directory(
+        directory, extensions, suffixes,
+        direction=direction, align=align, color=color
+    )
 
 if __name__ == '__main__':
     test()
