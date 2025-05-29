@@ -6,41 +6,97 @@ import QtQuick.Dialogs
 import QtQuick.Layouts
 
 Window {
-	width: 640
-	height: 480
-	visible: true
-	title: qsTr("Image Merger ver. 0.1")
+    width: 640
+    height: 480
+    visible: true
+    title: qsTr("Image Merger ver. 0.1")
 
-	ColumnLayout {
-		anchors.fill: parent
-		spacing: 10
+    color: systemPalette.window
+    SystemPalette {
+        id: systemPalette
+    }
 
 
-		Button {
-			id: btnSelectDirectory
-			text: qsTr("Select directory")
-			onClicked: folderDialog.open()
-		}
+    ColumnLayout {
+        anchors.fill: parent
+        spacing: 10
 
-		FolderDialog {
-			id: folderDialog
-			currentFolder: "."
-		}
 
-		Label {
-			text: qsTr("Suffixes")
-		}
+        Button {
+            id: btnSelectDirectory
+            Layout.alignment: Qt.AlignCenter
+            text: qsTr("Select directory")
+            onClicked: folderDialog.open()
+            hoverEnabled: true
+            ToolTip.delay: 1000
+            ToolTip.timeout: 5000
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Select directory")
+        }
 
-		ScrollView {
-			
-			id: scvSuffices
+        FolderDialog {
+            id: folderDialog
+            currentFolder: "."
+        }
 
-			TextArea {
-				id: tarSuffices
-			    placeholderText: qsTr("Enter suffices")
-			}
+        RowLayout {
 
-		}
-	}
+            ColumnLayout {
+                
+                Label {
+                    id: lblSuffixes
+                    anchors.top: btnSelectDirectory.botton
+                    text: qsTr("Suffixes")
+
+                }
+
+                Rectangle {
+                    border.color: "#000000"
+                    border.width: 1
+                    width: tarSuffices.width
+                    height: tarSuffices.height
+
+                    ScrollView {
+                        
+                        id: scvSuffices
+                        height: 30
+                        TextArea {
+                            id: tarSuffices
+                            placeholderText: qsTr("Enter suffices")
+                            
+                        }
+
+                    }
+                }
+
+            }
+
+            ColumnLayout {
+                Label {
+                    id: lblExtensions
+                    text: qsTr("Extensions")
+                }
+
+                TextArea {
+                    id: tarExtensions
+                    placeholderText: qsTr("Enter extensions")
+                    // Layout.maximumHeight: 200
+                    // flickable: true
+                    // ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                    ScrollView {
+                        id: scvExtensions
+
+                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                    }
+                }
+            }
+
+        }
+
+        Item {
+            Layout.fillHeight: true
+        }
+    }
 
 }
