@@ -40,8 +40,9 @@ Window {
         }
 
         RowLayout {
-
+            // Layout.alignment: 
             ColumnLayout {
+                Layout.fillWidth: true
                 
                 Label {
                     id: lblSuffixes
@@ -50,46 +51,70 @@ Window {
 
                 }
 
-                Rectangle {
-                    border.color: "#000000"
-                    border.width: 1
-                    width: tarSuffices.width
-                    height: tarSuffices.height
+                // Rectangle {
+                //     border.color: "#000000"
+                //     border.width: 1
+                //     width: tarSuffices.width
+                //     height: tarSuffices.height
 
                     ScrollView {
                         
                         id: scvSuffices
-                        height: 30
+                        width: parent.windth
+                        height: 50
                         TextArea {
                             id: tarSuffices
+                            width: parent.width
+                            height: parent.height
                             placeholderText: qsTr("Enter suffices")
                             
                         }
 
                     }
-                }
+                // }
 
             }
 
-            ColumnLayout {
-                Label {
-                    id: lblExtensions
-                    text: qsTr("Extensions")
-                }
+            // ColumnLayout {
+            //     Layout.fillWidth: true
 
-                TextArea {
-                    id: tarExtensions
-                    placeholderText: qsTr("Enter extensions")
-                    // Layout.maximumHeight: 200
-                    // flickable: true
-                    // ScrollBar.vertical.policy: ScrollBar.AsNeeded
-                    ScrollView {
-                        id: scvExtensions
+            //     Label {
+            //         id: lblExtensions
+            //         text: qsTr("Extensions")
+            //     }
 
-                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                    }
-                }
+            //     TextArea {
+            //         id: tarExtensions
+            //         placeholderText: qsTr("Enter extensions")
+            //         // Layout.maximumHeight: 200
+            //         // flickable: true
+            //         // ScrollBar.vertical.policy: ScrollBar.AsNeeded
+            //         ScrollView {
+            //             id: scvExtensions
+
+            //             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            //             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            //         }
+            //     }
+            // }
+
+        }
+
+        Label {
+            text: qsTr("Logs:")
+        }
+
+        ScrollView {
+            Layout.fillWidth: true
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+            height: 50
+            clip: true
+            contentHeight: tarLogs.height
+            
+            TextArea {
+                id: tarLogs
+                height: 50
+                wrapMode: TextEdit.Wrap
             }
 
         }
