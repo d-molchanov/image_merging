@@ -122,6 +122,54 @@ Window {
         Item {
             Layout.fillHeight: true
         }
+
+        Label {
+            text: qsTr("Flicable")
+        }
+
+        // Flickable {
+        //     Layout.fillWidth: true
+        //     contentHeight: 50
+        //     height: 30
+        //     clip: true
+
+        //     flickableDirection: Flickable.VerticalFlick
+
+        //     ScrollBar.vertical: ScrollBar {}
+        //     ScrollBar.horizontal: null
+
+        //     TextArea.flickable: TextArea {
+        //         id: textArea
+
+        //         wrapMode: TextArea.WordWrap
+
+        //         onTextChanged: { textArea.cursorPosition = textArea.length }
+        //     }
+        // }
+
+        Flickable {
+            Layout.fillWidth: true
+            height: 50 // Высота видимой области
+            clip: true
+            flickableDirection: Flickable.VerticalFlick // Только вертикальная прокрутка
+            contentHeight: textArea.paintedHeight      // Высота контента - это paintedHeight TextArea
+            contentWidth: textArea.paintedWidth // Ширина контента - это paintedWidth TextArea
+
+
+            ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded } // Полоса прокрутки по мере необходимости
+            ScrollBar.horizontal: null                               // Отключаем горизонтальную прокрутку
+
+            TextArea {
+                id: textArea
+                width: parent.width                 // TextArea занимает всю ширину родителя
+                wrapMode: TextArea.WordWrap
+                textFormat: Text.RichText // Для корректной работы paintedHeight с переносом строк
+                onTextChanged: {
+                     flickableItem.contentX = 0; // Сбрасываем горизонтальную прокрутку
+                }
+
+            }
+        }
     }
 
 }
