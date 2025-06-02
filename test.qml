@@ -20,6 +20,68 @@ Window {
         anchors.fill: parent
         spacing: 10
 
+        Button {
+            id: btnSelectDirectory
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("Select directory")
+            onClicked: folderDialog.open()
+            hoverEnabled: true
+            ToolTip.delay: 1000
+            ToolTip.timeout: 5000
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Select directory")
+        }
+
+        FolderDialog {
+            id: folderDialog
+            currentFolder: "."
+        }
+
+        Item {
+        // Rectangle {
+            // anchors.fill: parent
+            // color: "#ff0000"
+            Layout.fillWidth: true
+            // Layout.alignment: Qt.AlignHCenter
+            RowLayout {
+            Layout.fillWidth: true
+
+                anchors.fill: parent
+
+                // spacing: 10
+
+                ColumnLayout{
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignHCenter
+                    Label {
+                        id: lblSuffixes
+                        Layout.fillWidth: true
+
+                        text: qsTr("Suffixes")
+                        color: systemPalette.windowText
+                        Layout.alignment: Qt.AlignHCenter
+
+                        // Layout.alignment: Qt.AlignLeft
+                    }
+                }
+
+                ColumnLayout{
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignHCenter
+                    Label {
+                        Layout.fillWidth: true
+                        id: lblExtensions
+                        text: qsTr("Extensions")
+                        color: systemPalette.windowText
+                        Layout.alignment: Qt.AlignHCenter
+                        // Layout.alignment: Qt.AlignRight
+
+                    }
+                }
+
+            }
+        }
+
         Label {
                 text: qsTr("Logs:")
                 color: systemPalette.windowText
@@ -27,7 +89,8 @@ Window {
 
         Item {
             Layout.fillWidth: true
-
+            Layout.minimumHeight: 50
+            Layout.preferredHeight: 50
             ScrollView {
                 id: scvSuffices
                 width: parent.width
@@ -49,10 +112,181 @@ Window {
         }
 
         Item {
+
+            Layout.fillWidth: true
+            Layout.leftMargin: 10
+
+            Layout.minimumHeight: 140
+            // Layout.preferredHeight: 50
+            // Layout.alignment: Qt.AlignHCenter
+            RowLayout {
+            // Layout.fillWidth: true
+                id: rwLt
+                anchors.fill: parent
+                spacing: 0
+                // spacing: 10
+
+                ColumnLayout{
+                    Layout.fillWidth: true
+                    spacing: 0
+                    // Layout.alignment: Qt.AlignHCenter
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 20
+                        Label {
+                            text: qsTr("Suffixes")
+                            color: systemPalette.windowText
+                            anchors.centerIn: parent
+
+                        }
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.minimumHeight: 100
+                        Layout.preferredHeight: 100
+                        ScrollView {
+                            id: scvSufficesNew
+                            width: parent.width
+                            height: 100
+                            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                            
+                            TextArea {
+                                id: tarSufficesNew
+                                width: parent.width
+                                height: parent.height
+                                wrapMode: TextEdit.Wrap
+
+                                placeholderText: qsTr("This is Suffixes")
+                                
+                            }
+
+                        }
+                    }
+
+                    Item {
+                        Layout.fillHeight: true
+                    }
+
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    // Layout.alignment: Qt.AlignHCenter
+                    
+                    GroupBox {
+                        anchors.fill: parent
+                        // Layout.preferredWidth: rwLt.width / 2
+                        title: qsTr("Extensions")
+                        ScrollView {
+                            id: scvExtensionsNew
+                            width: parent.width
+                            height: 100
+                            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                            
+                            TextArea {
+                                id: tarExtensionsNew
+                                width: parent.width
+                                height: parent.height
+                                wrapMode: TextEdit.Wrap
+
+                                placeholderText: qsTr("This is Extensions")
+                                        
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+    
+        }
+        Item {
             Layout.fillHeight: true
         }
 
     }
+        // Item {
+        //     Layout.fillWidth: true
+
+        //     RowLayout {
+        //         id: layout
+        //         anchors.fill: parent
+        //         spacing: 6
+        //         Rectangle {
+        //             color: 'teal'
+        //             // Layout.fillWidth: true
+        //             Layout.minimumWidth: 50
+        //             Layout.preferredWidth: 100
+        //             // Layout.maximumWidth: 300
+        //             Layout.minimumHeight: 150
+        //             Layout.alignment: Qt.AlignHCenter
+        //             Text {
+        //                 anchors.centerIn: parent
+        //                 text: parent.width + 'x' + parent.height
+        //             }
+        //         }
+        //         Rectangle {
+        //             color: 'plum'
+        //             // Layout.fillWidth: true
+        //             Layout.minimumWidth: 100
+        //             Layout.preferredWidth: 200
+        //             Layout.preferredHeight: 100
+        //             Layout.alignment: Qt.AlignHCenter
+        //             Text {
+        //                 anchors.centerIn: parent
+        //                 text: parent.width + 'x' + parent.height
+        //             }
+        //         }
+        //     }
+
+        // }
+
+
+        // Item {
+
+        //     Layout.fillWidth: true
+        //     Layout.minimumHeight: 50
+        //     Layout.preferredHeight: 50
+        //     // Layout.alignment: Qt.AlignHCenter
+        //     RowLayout {
+        //     // Layout.fillWidth: true
+
+        //         anchors.fill: parent
+        //         spacing: 0
+        //         // spacing: 10
+
+        //         ColumnLayout{
+        //             Layout.fillWidth: true
+        //             Layout.alignment: Qt.AlignHCenter
+        //             Rectangle {
+
+        //                 // Layout.preferredWidth: 100
+        //                 Layout.fillWidth: true
+        //                 Layout.preferredHeight: 50
+        //                 color: "#ff0000"
+        //             }
+                    
+        //         }
+
+        //         ColumnLayout{
+        //             Layout.fillWidth: true
+        //             Layout.alignment: Qt.AlignHCenter
+        //             Rectangle {
+                        
+        //                 Layout.fillWidth: true
+        //                 // Layout.preferredWidth: 100
+        //                 Layout.preferredHeight: 50
+        //                 color: "#00ff00"
+        //             }
+        //         }
+
+        //     }
+        // }
 
     // Button {
     //     id: btnSelectDirectory
