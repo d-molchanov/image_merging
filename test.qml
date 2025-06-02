@@ -30,6 +30,12 @@ Window {
             ToolTip.timeout: 5000
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Select directory")
+            // ToolTip {
+            //     delay: 1000
+            //     timeout: 5000
+            //     visible: hovered
+            //     text: qsTr("Select directory")
+            // }
         }
 
         FolderDialog {
@@ -38,9 +44,15 @@ Window {
         }
 
         Item {
-
+            // Layout: {
+            //     fillWidth: true
+            //     leftMargin: 10
+            //     rightMargin: 10
+            //     minimumHeight: 140
+            // }
             Layout.fillWidth: true
             Layout.leftMargin: 10
+            Layout.rightMargin: 10
 
             Layout.minimumHeight: 140
             RowLayout {
@@ -154,31 +166,51 @@ Window {
             Layout.fillWidth: true
             Layout.margins: 10
 
-            Layout.minimumHeight: 20
+            Layout.minimumHeight: 32
             RowLayout {
                 anchors.fill: parent
                 Rectangle {
+                    SystemPalette {
+                        id: myPalette
+                        colorGroup: SystemPalette.Disabled
+                    }
+
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    color: systemPalette.highlightedText
+                    // color: systemPalette.highlightedText
+                    color: systemPalette.window
+                    // border.color: systemPalette.windowText
+
+                    border.color: myPalette.placeholderText
+                    border.width: 1
                     TextEdit {
-                        // selectionColor: systemPalette.highlight
-                        selectionColor: systemPalette.accent
+
+                        selectionColor: systemPalette.highlight
+                        // selectionColor: systemPalette.accent
                         width: parent.width
                         anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 10
                         // palette.base: "#FF0000"
                         // palette.text: "#ffff00"
                         text: qsTr("Hello!")
+                        // color: systemPalette.windowText
+                        color: systemPalette.windowText
 
                     }
                 }
 
                 Button {
+                    padding: 10
                     text: qsTr("Select directory")
+                    Layout.fillHeight: true
                 }
 
                 Button {
+                    padding: 6
                     text: qsTr("Merge images")
+                    Layout.fillHeight: true
+
                 }
             }
         }
