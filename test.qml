@@ -20,29 +20,6 @@ Window {
         anchors.fill: parent
         spacing: 10
 
-        Button {
-            id: btnSelectDirectory
-            Layout.alignment: Qt.AlignHCenter
-            text: qsTr("Select directory")
-            onClicked: folderDialog.open()
-            hoverEnabled: true
-            ToolTip.delay: 1000
-            ToolTip.timeout: 5000
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Select directory")
-            // ToolTip {
-            //     delay: 1000
-            //     timeout: 5000
-            //     visible: hovered
-            //     text: qsTr("Select directory")
-            // }
-        }
-
-        FolderDialog {
-            id: folderDialog
-            currentFolder: "."
-        }
-
         Item {
             // Layout: {
             //     fillWidth: true
@@ -60,46 +37,73 @@ Window {
                 anchors.fill: parent
                 spacing: 10
 
-                ColumnLayout{
+                // ColumnLayout{
+                //     Layout.fillWidth: true
+                //     spacing: 0
+                //     Item {
+                //         Layout.fillWidth: true
+                //         Layout.preferredHeight: 20
+                //         Label {
+                //             text: qsTr("Suffixes")
+                //             color: systemPalette.windowText
+                //             anchors.centerIn: parent
+
+                //         }
+                //     }
+
+                //     Item {
+                //         Layout.fillWidth: true
+                //         Layout.minimumHeight: 100
+                //         Layout.preferredHeight: 100
+                //         ScrollView {
+                //             id: scvSufficesNew
+                //             width: parent.width
+                //             height: 100
+                //             ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                //             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                            
+                //             TextArea {
+                //                 id: tarSufficesNew
+                //                 width: parent.width
+                //                 height: parent.height
+                //                 wrapMode: TextEdit.Wrap
+
+                //                 placeholderText: qsTr("This is Suffixes")
+                //             }
+                //         }
+                //     }
+
+                //     Item {
+                //         Layout.fillHeight: true
+                //     }
+
+                // }
+
+                Item {
                     Layout.fillWidth: true
-                    spacing: 0
-                    Item {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 20
-                        Label {
-                            text: qsTr("Suffixes")
-                            color: systemPalette.windowText
-                            anchors.centerIn: parent
-
-                        }
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-                        Layout.minimumHeight: 100
-                        Layout.preferredHeight: 100
+                    Layout.fillHeight: true
+                    
+                    GroupBox {
+                        anchors.fill: parent
+                        title: qsTr("Suffixes")
                         ScrollView {
-                            id: scvSufficesNew
+                            id: scvSuffixesNew
                             width: parent.width
                             height: 100
                             ScrollBar.vertical.policy: ScrollBar.AsNeeded
                             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                             
                             TextArea {
-                                id: tarSufficesNew
+                                id: tarSuffixesNew
                                 width: parent.width
                                 height: parent.height
                                 wrapMode: TextEdit.Wrap
 
-                                placeholderText: qsTr("This is Suffixes")
+                                placeholderText: qsTr("Ex.:\n_main\n_profile\netc.")
+                                        
                             }
                         }
                     }
-
-                    Item {
-                        Layout.fillHeight: true
-                    }
-
                 }
 
                 Item {
@@ -122,25 +126,150 @@ Window {
                                 height: parent.height
                                 wrapMode: TextEdit.Wrap
 
-                                placeholderText: qsTr("This is Extensions")
+                                placeholderText: qsTr("Ex.:\n.png\n.jpg\netc.")
                                         
                             }
                         }
                     }
                 }
+
+                Item {
+
+                    Layout.fillHeight: true
+                    // Layout.minimumHeight: 20
+                    Layout.preferredWidth: 120
+                    // Layout.margins: 10
+
+                    GroupBox {
+                        anchors.fill: parent
+                        // height: parent.height
+                        title: qsTr("Alignment")
+
+                        ColumnLayout {
+                            anchors.fill: parent
+                            id: root
+                            ComboBox {
+                                // Layout.fillHeight: true
+                                id: cbDirection
+                                currentIndex: 0
+                                model: ListModel {
+                                    ListElement { text: qsTr("Horizontal") }
+                                    ListElement { text: qsTr("Vertical") }
+                                }
+
+                                onCurrentIndexChanged: {
+                                    root.updateAlignmentModel()
+                                }
+                            }
+
+                            ComboBox {
+                                // Layout.fillHeight: true
+                                id: cbAlignment
+                                currentIndex: 0
+                                model: ["Left", "Center", "Right"]
+                            }
+
+                            Item {
+                                Layout.fillHeight: true
+                            }
+
+                            function updateAlignmentModel() {
+                                console.debug(cbAlignment.model)
+                                if (cbDirection.currentIndex === 0) {
+                                    cbAlignment.model = ["Left", "Center", "Right"]
+                                } else { // Vertical
+                                    cbAlignment.model = ["Top", "Center", "Bottom"]
+                                }
+                                cbAlignment.currentIndex = 1
+                                // console.debug(StandardPaths.applicationDirPath)
+                            }
+                        }
+                    }
+                }
+
+                // Item {
+                //     Layout.fillHeight: true
+                // }
             }
         }
 
-        Label {
-                text: qsTr("Logs:")
-                color: systemPalette.windowText
+        // Label {
+        //         text: qsTr("Logs:")
+        //         color: systemPalette.windowText
+        // }
+
+        
+
+        Item {
+
+            Layout.fillWidth: true
+            Layout.margins: 10
+
+            Layout.minimumHeight: 32
+            RowLayout {
+                anchors.fill: parent
+                
+                TextField {
+                    id: textFieldDirectory
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+                    // Layout.fillHeight: true
+                    // palette.base: systemPalette.window
+                    // width: parent.width
+                    // anchors.verticalCenter: parent.verticalCenter
+                    // anchors.left: parent.left
+                    // anchors.leftMargin: 10
+                    placeholderText: qsTr("Type or select via button ->")
+
+                }
+                
+
+                Button {
+                    id: btnSelectDirectory
+
+                    padding: 10
+                    text: qsTr("Select directory")
+                    Layout.fillHeight: true
+                    onClicked: folderDialog.open()
+                    hoverEnabled: true
+                    ToolTip.delay: 1000
+                    ToolTip.timeout: 5000
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Select directory")
+                }
+
+                FolderDialog {
+                    id: folderDialog
+                    currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+                    // currentFolder: StandardPaths.applicationDirPath
+
+                    onAccepted: {
+                        let url = folderDialog.selectedFolder
+                        let nativePath = Qt.resolvedUrl(url).toString().replace("file:///", "")
+                        textFieldDirectory.text = nativePath
+                        console.debug(nativePath)
+                   }
+                }  
+
+                Button {
+                    padding: 6
+                    text: qsTr("Merge images")
+                    Layout.fillHeight: true
+
+                }
+            }
         }
+
+
+
+        
 
         Item {
             Layout.fillWidth: true
             Layout.minimumHeight: 50
             Layout.preferredHeight: 50
-            Layout.margins: 10
+            Layout.leftMargin: 10
+            Layout.rightMargin: 10
             ScrollView {
                 id: scvSuffices
                 width: parent.width
@@ -162,117 +291,67 @@ Window {
         }
 
         Item {
-
-            Layout.fillWidth: true
-            Layout.margins: 10
-
-            Layout.minimumHeight: 32
-            RowLayout {
-                anchors.fill: parent
-                Rectangle {
-                    SystemPalette {
-                        id: myPalette
-                        colorGroup: SystemPalette.Disabled
-                    }
-
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    // color: systemPalette.highlightedText
-                    color: systemPalette.window
-                    // border.color: systemPalette.windowText
-
-                    border.color: myPalette.placeholderText
-                    border.width: 1
-                    TextEdit {
-
-                        selectionColor: systemPalette.highlight
-                        // selectionColor: systemPalette.accent
-                        width: parent.width
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        // palette.base: "#FF0000"
-                        // palette.text: "#ffff00"
-                        text: qsTr("Hello!")
-                        // color: systemPalette.windowText
-                        color: systemPalette.windowText
-
-                    }
-                }
-
-                Button {
-                    padding: 10
-                    text: qsTr("Select directory")
-                    Layout.fillHeight: true
-                }
-
-                Button {
-                    padding: 6
-                    text: qsTr("Merge images")
-                    Layout.fillHeight: true
-
-                }
-            }
-        }
-
-        Item {
-
-            Layout.fillWidth: true
-            Layout.margins: 10
-
-            Layout.minimumHeight: 20
-            RowLayout {
-                anchors.fill: parent
-                id: root
-                ComboBox {
-                    Layout.fillWidth: true
-                    id: cbDirection
-                    currentIndex: 0
-                    model: ListModel {
-                        ListElement { text: qsTr("Horizontal") }
-                        ListElement { text: qsTr("Vertical") }
-                    }
-
-                    onCurrentIndexChanged: {
-                        root.updateAlignmentModel()
-                    }
-
-                    // onCurrentIndexChanged: {
-                    //     console.debug(cbDirection.get(currentIndex).text)
-                    //     if (cbDirection.currentIndex === 0) {
-                    //         cbAlignment.model = ["Left", "Center", "Right"]
-                    //     } else { // Vertical
-                    //         cbAlignment.model = ["Top", "Center", "Bottom"]
-                    //     }
-                    // }
-                }
-
-                ComboBox {
-                    Layout.fillWidth: true
-                    id: cbAlignment
-                    currentIndex: 0
-                    // model: ListModel {
-                    //     ListElement { text: qsTr("Top") }
-                    //     ListElement { text: qsTr("Center") }
-                    //     ListElement { text: qsTr("Down") }
-                    // }
-                    model: ["Left", "Center", "Right"]
-                }
-
-                function updateAlignmentModel() {
-                    console.debug(cbAlignment.model)
-                    if (cbDirection.currentIndex === 0) {
-                        cbAlignment.model = ["Left", "Center", "Right"]
-                    } else { // Vertical
-                        cbAlignment.model = ["Top", "Center", "Bottom"]
-                    }
-                }
-            }
-        }
-
-        Item {
             Layout.fillHeight: true
         }
+
+        // Item {
+
+        //     Layout.fillWidth: true
+        //     Layout.margins: 10
+
+        //     Layout.minimumHeight: 20
+        //     RowLayout {
+        //         anchors.fill: parent
+        //         id: root
+        //         ComboBox {
+        //             Layout.fillWidth: true
+        //             id: cbDirection
+        //             currentIndex: 0
+        //             model: ListModel {
+        //                 ListElement { text: qsTr("Horizontal") }
+        //                 ListElement { text: qsTr("Vertical") }
+        //             }
+
+        //             onCurrentIndexChanged: {
+        //                 root.updateAlignmentModel()
+        //             }
+
+        //             // onCurrentIndexChanged: {
+        //             //     console.debug(cbDirection.get(currentIndex).text)
+        //             //     if (cbDirection.currentIndex === 0) {
+        //             //         cbAlignment.model = ["Left", "Center", "Right"]
+        //             //     } else { // Vertical
+        //             //         cbAlignment.model = ["Top", "Center", "Bottom"]
+        //             //     }
+        //             // }
+        //         }
+
+        //         ComboBox {
+        //             Layout.fillWidth: true
+        //             id: cbAlignment
+        //             currentIndex: 0
+        //             // model: ListModel {
+        //             //     ListElement { text: qsTr("Top") }
+        //             //     ListElement { text: qsTr("Center") }
+        //             //     ListElement { text: qsTr("Down") }
+        //             // }
+        //             model: ["Left", "Center", "Right"]
+        //         }
+
+        //         function updateAlignmentModel() {
+        //             console.debug(cbAlignment.model)
+        //             if (cbDirection.currentIndex === 0) {
+        //                 cbAlignment.model = ["Left", "Center", "Right"]
+        //             } else { // Vertical
+        //                 cbAlignment.model = ["Top", "Center", "Bottom"]
+        //             }
+        //         }
+        //     }
+        // }
+
+        // Item {
+        //     Layout.fillHeight: true
+        // }
 
     }
 }
