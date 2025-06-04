@@ -87,14 +87,14 @@ Window {
                         anchors.fill: parent
                         title: qsTr("Suffixes")
                         ScrollView {
-                            id: scvSuffixesNew
+                            id: scrollViewSuffixes
                             width: parent.width
                             height: 100
                             ScrollBar.vertical.policy: ScrollBar.AsNeeded
                             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                             
                             TextArea {
-                                id: tarSuffixesNew
+                                id: textAreaSuffixes
                                 width: parent.width
                                 height: parent.height
                                 wrapMode: TextEdit.Wrap
@@ -114,14 +114,14 @@ Window {
                         anchors.fill: parent
                         title: qsTr("Extensions")
                         ScrollView {
-                            id: scvExtensionsNew
+                            id: scrollViewExtensions
                             width: parent.width
                             height: 100
                             ScrollBar.vertical.policy: ScrollBar.AsNeeded
                             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                             
                             TextArea {
-                                id: tarExtensionsNew
+                                id: textAreaExtensions
                                 width: parent.width
                                 height: parent.height
                                 wrapMode: TextEdit.Wrap
@@ -152,6 +152,7 @@ Window {
                                 // Layout.fillHeight: true
                                 id: cbDirection
                                 currentIndex: 0
+                                Layout.preferredWidth: 100
                                 model: ListModel {
                                     ListElement { text: qsTr("Horizontal") }
                                     ListElement { text: qsTr("Vertical") }
@@ -166,6 +167,7 @@ Window {
                                 // Layout.fillHeight: true
                                 id: cbAlignment
                                 currentIndex: 0
+                                Layout.preferredWidth: 100
                                 model: ["Left", "Center", "Right"]
                             }
 
@@ -242,7 +244,7 @@ Window {
                     id: folderDialog
                     currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
                     // currentFolder: StandardPaths.applicationDirPath
-
+                    // flags: FolderDialog.ShowDirsOnly
                     onAccepted: {
                         let url = folderDialog.selectedFolder
                         let nativePath = Qt.resolvedUrl(url).toString().replace("file:///", "")
@@ -255,7 +257,23 @@ Window {
                     padding: 6
                     text: qsTr("Merge images")
                     Layout.fillHeight: true
+                    enabled: textFieldDirectory.text.trim() !== "" && textAreaSuffixes.text.trim() !== "" && textAreaExtensions.text.trim()
+                    onClicked: {
+                        backend.text = textFieldDirectory.text
+                        backend.get_target_directory(textFieldDirectory.text)
+                        backend.get_suffixes(textAreaSuffixes.text)
+                        backend.get_extensions(textAreaExtensions.text)
+                        // backend.print_text(textFieldDirectory.text)
+                    }
 
+                }
+
+                Connections {
+                    target: backend
+                    function onLogsUpdated(log) {
+                        // textAreaLogs.text = log
+                        textAreaLogs.append(log)
+                    }
                 }
             }
         }
@@ -271,14 +289,14 @@ Window {
             Layout.leftMargin: 10
             Layout.rightMargin: 10
             ScrollView {
-                id: scvSuffices
+                id: scrollViewLogs
                 width: parent.width
-                height: 50
+                height: 100
                 ScrollBar.vertical.policy: ScrollBar.AsNeeded
                 ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                 
                 TextArea {
-                    id: tarSuffices
+                    id: textAreaLogs
                     width: parent.width
                     height: parent.height
                     wrapMode: TextEdit.Wrap
