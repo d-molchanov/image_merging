@@ -85,6 +85,7 @@ class ImageMerger:
                     
     def get_files_from_directory(self, directory: Path, extensions: list, suffixes: list):
         result = {}
+        print(f'{directory = }, {type(directory)}')
         for root, dirs, files in walk(directory.resolve()):
             for f in files:
                 filename = (Path(root) / Path(f)).resolve()
@@ -104,7 +105,7 @@ class ImageMerger:
 
     def merge_images_in_directory(self, directory: Path, extensions: list, suffixes: list, direction: str='h', align: str='b', color: str='#ffffff' ):
         files = self.get_files_from_directory(directory, extensions, suffixes)
-        print(f'{files = }')
+        print(f'{extensions = }, {suffixes = }, {files = }')
         try:
             for key, value in files.items():
                 if len(value) > 1:
@@ -171,8 +172,8 @@ def test():
     directory = Path('./test')
     extensions = ['.jpg', '.png', '.jpeg']
     suffixes = ['_main', '_профиль', '_profile']
-    direction = 'v'
-    align = 'c'
+    direction = 'h'
+    align = 'b'
     color = '#ffffff'
     print(f'{directory.resolve() = }')
     image_merger.merge_images_in_directory(
