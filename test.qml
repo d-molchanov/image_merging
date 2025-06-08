@@ -98,7 +98,7 @@ Window {
                                 width: parent.width
                                 height: parent.height
                                 wrapMode: TextEdit.Wrap
-
+                                text: qsTr("_main _profile")
                                 placeholderText: qsTr("Ex.:\n_main\n_profile\netc.")
                                         
                             }
@@ -125,7 +125,7 @@ Window {
                                 width: parent.width
                                 height: parent.height
                                 wrapMode: TextEdit.Wrap
-
+                                text: qsTr(".png\n\n.jpg")
                                 placeholderText: qsTr("Ex.:\n.png\n.jpg\netc.")
                                         
                             }
@@ -166,9 +166,10 @@ Window {
                             ComboBox {
                                 // Layout.fillHeight: true
                                 id: cbAlignment
-                                currentIndex: 0
+                                currentIndex: 1
                                 Layout.preferredWidth: 100
-                                model: ["Left", "Center", "Right"]
+                                // model: ["Left", "Center", "Right"]
+                                model: ["Top", "Center", "Bottom"]
                             }
 
                             Item {
@@ -177,7 +178,7 @@ Window {
 
                             function updateAlignmentModel() {
                                 console.debug(cbAlignment.model)
-                                if (cbDirection.currentIndex === 0) {
+                                if (cbDirection.currentIndex === 1) {
                                     cbAlignment.model = ["Left", "Center", "Right"]
                                 } else { // Vertical
                                     cbAlignment.model = ["Top", "Center", "Bottom"]
@@ -222,6 +223,7 @@ Window {
                     // anchors.left: parent.left
                     // anchors.leftMargin: 10
                     placeholderText: qsTr("Type or select via button ->")
+                    text: qsTr("/home/dmitry/Projects/python/(2025_05_25)_image_merger/test")
 
                 }
                 
@@ -263,6 +265,10 @@ Window {
                         backend.get_target_directory(textFieldDirectory.text)
                         backend.get_suffixes(textAreaSuffixes.text)
                         backend.get_extensions(textAreaExtensions.text)
+                        backend.get_direction(cbDirection.currentText)
+                        backend.get_alignment(cbAlignment.currentText)
+                        console.debug(cbAlignment.currentText)
+                        backend.merge_images()
                         // backend.print_text(textFieldDirectory.text)
                     }
 

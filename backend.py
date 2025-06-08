@@ -1,5 +1,5 @@
 from pathlib import Path
-from image_merging import ImageMerger, Filepath
+from image_merging import ImageMerger, Filepath, Alignment, Direction
 
 from PySide6.QtCore import Signal, QObject, Slot, Property
 
@@ -23,13 +23,14 @@ class Backend(QObject):
 
     @Slot()
     def merge_images(self):
-        self.image_merger.merge_images_in_directory(
+        self.image_merger.process_directory(
             self._target_directory,
             self._extensions,
             self._suffixes,
             direction=self._direction,
-            align=self._alignment,
-            color=self._color
+            alignment=self._alignment,
+            color=self._color,
+            result_extension='.jpg'
         )
 
     @Property(str, notify=textChanged)
@@ -70,9 +71,9 @@ class Backend(QObject):
     @Slot(str)
     def get_direction(self, input_text: str) -> None:
         if input_text == 'Vertical':
-            self._direction = 'v'
+            self._direction = Direction.VERTICAL
         elif input_text == 'Horizontal':
-            self._direction = 'h'
+            self._direction = Direction.HORIZONTAL
         else:
             self._direction = ''
         self.logsUpdated.emit(f'Images direction: {self._direction} - {input_text}')
@@ -80,16 +81,17 @@ class Backend(QObject):
     @Slot(str)
     def get_alignment(self, input_text: str) -> None:
         if input_text == 'Center':
-            self._alignment = 'c'
+            self._alignment = Alignment.CENTER
         elif input_text == 'Top':
-            self._alignment == 't'
+            self._alignment = Alignment.TOP
         elif input_text == 'Bottom':
-            self._alignment == 'b'
+            self._alignment = Alignment.BOTTOM
         elif input_text == 'Left':
-            self._alignment = 'l'
+            self._alignment = Alignment.LEFT
         elif input_text == 'Right':
-            self._alignment = 'r'
+            self._alignment = Alignment.RIGHT
         else:
+            # TODO: exception to handle
             self._alignment = ''
         self.logsUpdated.emit(f'Images alignment: {self._alignment} - {input_text}')
 
