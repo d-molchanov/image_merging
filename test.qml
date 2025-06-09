@@ -1,6 +1,7 @@
 import QtCore
 import QtQuick
 import QtQuick.Window
+// import QtQuick.Controls.Basic
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
@@ -208,7 +209,7 @@ Window {
             GroupBox {
                 anchors.fill: parent
                 title: qsTr("Output image parameters")
-
+                id: groupBoxImageParameters
                 RowLayout {
                     anchors.fill: parent
 
@@ -217,10 +218,21 @@ Window {
                         color: systemPalette.windowText
                     }
 
-                    TextField {
-                        id: textFieldQuality
-                        width: 32
-                        placeholderText: qsTr("Quality")
+                    // TextField {
+                    //     id: textFieldQuality
+                    //     width: 32
+                    //     placeholderText: qsTr("Quality")
+                    // }
+
+                    SpinBox {
+                        id: spinBoxQuality
+                        from: 1
+                        to: 100
+                        value: 75
+                        editable: true
+                        Layout.preferredWidth: 56
+                        // width: 100
+
                     }
 
 
@@ -231,8 +243,21 @@ Window {
 
                     TextField {
                         id: textFieldColor
-                        width: 32
+                        Layout.preferredWidth: 64
                         placeholderText: qsTr("Ex.: #ffffff for white")
+                        text: "#ffffff"
+                        validator: RegularExpressionValidator { 
+                            regularExpression: /^#[0-9A-Fa-f]{6}$/
+                        }
+
+                        // textFromValue: function(value) {
+                        //     return '#' + value
+                        // }
+
+                        // valueFromText: function(text, locale) {
+                        //     let re = /^#[0-9A-Fa-f]{6}$/
+                        //     return re.exec(text)[1]
+                        // }
                     }
 
                     Label {
@@ -245,11 +270,80 @@ Window {
                         currentIndex: 0
                         Layout.preferredWidth: 48
                         model: [".jpg", ".png"]
+
+                        onCurrentIndexChanged: {
+                            groupBoxImageParameters.updateSpinBoxQuality()
+                        }
                     }
+
+                    Switch {
+                        id: switchSubdirectories
+                        text: qsTr("Subdirectories")
+                        // Text {
+                        //     text: qsTr("Subdirectories")
+                        //     color: "#ffffff"
+                        // }
+                        // contentItem: Text {
+                        //     color: systemPalette.windowText
+                        // }
+                        // color: systemPalette.windowText
+                        palette {
+                            // buttonText: systemPalette.windowText
+                            buttonText: "#ffffff"
+                        }
+                        onClicked: {
+                            console.debug(switchSubdirectories.checked)
+                        }
+                    }
+
+                    // Switch {
+                    //     id: control
+                    //     text: qsTr("Switch")
+
+                    //     indicator: Rectangle {
+                    //         implicitWidth: 48
+                    //         implicitHeight: 26
+                    //         x: control.leftPadding
+                    //         y: parent.height / 2 - height / 2
+                    //         radius: 13
+                    //         color: control.checked ? "#17a81a" : "#ffffff"
+                    //         border.color: control.checked ? "#17a81a" : "#cccccc"
+
+                    //         Rectangle {
+                    //             x: control.checked ? parent.width - width : 0
+                    //             width: 26
+                    //             height: 26
+                    //             radius: 13
+                    //             color: control.down ? "#cccccc" : "#ffffff"
+                    //             border.color: control.checked ? (control.down ? "#17a81a" : "#21be2b") : "#999999"
+                    //         }
+                    //     }
+
+                    //     contentItem: Text {
+                    //         text: control.text
+                    //         font: control.font
+                    //         opacity: enabled ? 1.0 : 0.3
+                    //         color: control.down ? "#17a81a" : "#21be2b"
+                    //         verticalAlignment: Text.AlignVCenter
+                    //         leftPadding: control.indicator.width + control.spacing
+                    //     }
+                    // }
 
                     Item {
                         Layout.fillWidth: true
                     }
+                }
+
+                function updateSpinBoxQuality() {
+                    // console.debug(cbAlignment.model)
+                    if (comboBoxResultExtension.currentIndex === 0) {
+                        spinBoxQuality.to = 100
+                        spinBoxQuality.value = 75                        
+                    } else { // Vertical
+                        spinBoxQuality.to = 9
+                        spinBoxQuality.value = 7
+                    }
+                    // console.debug(StandardPaths.applicationDirPath)
                 }
 
             }
