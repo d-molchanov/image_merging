@@ -203,13 +203,13 @@ class ImageMerger:
             if filtered_basenames:
                 filepaths[root] = filtered_basenames
 
-        # for k1, v1 in filepaths.items():
-        #     print(f'{k1} - {type(k1)}:')
-        #     for k2, v2 in v1.items():
-        #         print(f'\t{k2} - {type(k2)}:')
-        #         for v3 in v2:
-        #             print(f'\t\t{v3} - {type(v3)}')
-        #         print(self.create_filename(k1, k2, '.jpg'))
+        for k1, v1 in filepaths.items():
+            print(f'{k1} - {type(k1)}:')
+            for k2, v2 in v1.items():
+                print(f'\t{k2} - {type(k2)}:')
+                for v3 in v2:
+                    print(f'\t\t{v3} - {type(v3)}')
+                print(self.create_filename(k1, k2, '.jpg'))
         # print(filepaths)
         return filepaths
 
@@ -247,7 +247,12 @@ class ImageMerger:
             for name, paths in names.items():
                 new_image = self.merge_images(paths, direction, alignment, color)
                 filename = self.create_filename(root, name, result_extension)
-                self.save_image(new_image, filename)
+                print(f'{filename = }')
+                try:
+                    new_image.show()
+                    self.save_image(new_image, filename)
+                except AttributeError as e:
+                    print(f'{filename}: {e}')
 
     def merge_images(
             self,
@@ -302,7 +307,7 @@ class ImageMerger:
         return Path(root) / f'{name}{extension}'
 
     def save_image(self, image: Image, filename: str | Path):
-        image.save(filename)
+        image.save(filename, quality=80)
 
 
 def print_dict(d: dict):

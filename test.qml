@@ -98,7 +98,7 @@ Window {
                                 width: parent.width
                                 height: parent.height
                                 wrapMode: TextEdit.Wrap
-                                text: qsTr("_main _profile")
+                                text: qsTr("_main _profile _профиль")
                                 placeholderText: qsTr("Ex.:\n_main\n_profile\netc.")
                                         
                             }
@@ -200,7 +200,61 @@ Window {
         //         text: qsTr("Logs:")
         //         color: systemPalette.windowText
         // }
+        Item {
+            Layout.fillWidth: true
+            Layout.leftMargin: 10
+            Layout.rightMargin: 10
+            Layout.minimumHeight: 64
+            GroupBox {
+                anchors.fill: parent
+                title: qsTr("Output image parameters")
 
+                RowLayout {
+                    anchors.fill: parent
+
+                    Label {
+                        text: qsTr("Quality:")
+                        color: systemPalette.windowText
+                    }
+
+                    TextField {
+                        id: textFieldQuality
+                        width: 32
+                        placeholderText: qsTr("Quality")
+                    }
+
+
+                    Label {
+                        text: qsTr("Color:")
+                        color: systemPalette.windowText
+                    }
+
+                    TextField {
+                        id: textFieldColor
+                        width: 32
+                        placeholderText: qsTr("Ex.: #ffffff for white")
+                    }
+
+                    Label {
+                        text: qsTr("Result file extension:")
+                        color: systemPalette.windowText
+                    }
+
+                    ComboBox {
+                        id: comboBoxResultExtension
+                        currentIndex: 0
+                        Layout.preferredWidth: 48
+                        model: [".jpg", ".png"]
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                    }
+                }
+
+            }
+
+        }
         
 
         Item {
@@ -223,7 +277,8 @@ Window {
                     // anchors.left: parent.left
                     // anchors.leftMargin: 10
                     placeholderText: qsTr("Type or select via button ->")
-                    text: qsTr("/home/dmitry/Projects/python/(2025_05_25)_image_merger/test")
+                    // text: qsTr("/home/dmitry/Projects/python/(2025_05_25)_image_merger/test")
+                    text: qsTr("D:/MIPT/Projects/20250519_Image_Merging/test")
 
                 }
                 
